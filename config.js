@@ -4,6 +4,7 @@ var projectDir = __dirname,
         controllers: projectDir + '/controllers',
         templates: projectDir + '/templates',
         routes: projectDir + '/routes'
+
     };
 
 var Config = {
@@ -28,8 +29,9 @@ var Config = {
     },
 
     getRoutes: function() {
-        console.log("getRoutes:" + this.route);
+        console.log("getRoutes:"+this.route);
         return require(this.routes);
     }
 };
+
 module.exports = Config;
