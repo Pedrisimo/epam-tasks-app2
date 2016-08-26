@@ -1,153 +1,133 @@
-    if(window.innerWidth < 768)
-    {
-        document.getElementById('form').style.width="100%";
-        document.getElementById('table_div').style.width="100%";
-        document.getElementById('name').style.width="100%";
-        document.getElementById('phone').style.width="100%";
-        document.getElementById('email').style.width="100%";
+var elEmail = document.getElementById("email");
+var elName = document.getElementById("name");
+var elPhone = document.getElementById("phone");
+var btPost = document.getElementById('post');
+var btGet = document.getElementById('get');
+var btClear = document.getElementById('clear');
+var divTable = document.getElementById('table_div');
+var fForm = document.getElementById('form');
+
+ResizeElements();
+SetListeners();
+
+function ResizeElements() {
+    if (window.innerWidth < 768) {
+        fForm.style.width = "100%";
+        divTable.style.width = "100%";
+        elName.style.width = "100%";
+        elPhone.style.width = "100%";
+        elEmail.style.width = "100%";
     }
 
+}
+//adding button-event listiners
+function SetListeners() {
+    elName.addEventListener('blur', checkName);
+    elPhone.addEventListener('blur', checkPhone);
+    elEmail.addEventListener('blur', checkEmail);
+    btPost.addEventListener('click', postData);
+    btGet.addEventListener('click', getData);
+    btClear.addEventListener('click', clearForms);
+}
 
-  //adding button-event listiners
-    document.getElementById('name').addEventListener('blur', checkName);
-    document.getElementById('phone').addEventListener('blur', checkPhone);
-    document.getElementById('email').addEventListener('blur', checkEmail);
-    document.getElementById('post').addEventListener('click', postData);
-    document.getElementById('get').addEventListener('click', getData);
-    document.getElementById('clear').addEventListener('click', clearForms);
-
-
+function checkName() {
+        let nameReg = new RegExp(/\d/g);
     
-function checkName()
-{
-    var name_str = document.getElementById("name").value;
-    var name_reg = /^\d$/ig;
-    document.getElementById('name_error').style.visibility='hidden';
-    document.getElementById('name_error').innerHTML=null;
-    if(name_str.length == 0)
-    {
-        document.getElementById('name_error').innerHTML="Please enter valid name (length >0 and contain only symbols";
-        document.getElementById('name_error').style.visibility='visible';
-        document.getElementById("name").focus();
+    if ((elName.value.length === 0) || (elName.value.match(nameReg) !== null)) {
+        RaizeError(window.event.target.name, 1);
     }
-    else
-    {
-        name_str = name_str.match(name_reg);
-        if(name_str != null)
-        {
-            document.getElementById('name_error').innerHTML="Please enter valid name (length >0 and contain only symbols";
-            document.getElementById('name_error').style.visibility='visible';
-            document.getElementById("name").focus(); 
-        }
-
+    else {
+            RaizeError(window.event.target.name, 0);
     }
 }
-function checkEmail()
-{
-    var email_str = document.getElementById("email").value;
-    var email_reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-    document.getElementById('email_error').style.visibility='hidden';
-    document.getElementById('email_error').innerHTML=null;
-    if(email_str.length == 0)
-    {
-        document.getElementById('email_error').innerHTML="Please enter valid email";
-        document.getElementById('email_error').style.visibility='visible';
-        document.getElementById("email").focus();
+
+function checkEmail() {
+    let emailReg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/);
+
+    if ((elEmail.value.length === 0) || emailReg.test(elEmail.value) !== true) {
+        RaizeError(window.event.target.name, 1);
     }
-    else
-    {
-        email_str = email_reg.test(email_str);
-        if(email_str != true)
-        {
-            document.getElementById('email_error').innerHTML="Please enter valid email";
-            document.getElementById('email_error').style.visibility='visible';
-            document.getElementById("email").focus(); 
-        }
+    else {
+            RaizeError(window.event.target.name, 0);
     }
 }
 
 function checkPhone()
 {
-    var phone_str = document.getElementById("phone").value;
-    var phone_reg = /^\+375(25|29|33|44)\d{7}$/g;
-    var phone_reg1 = /^\8017(2|3)\d{6}$/g;
-    document.getElementById('phone_error').style.visibility='hidden';
-    document.getElementById('phone_error').innerHTML=null;
-    var phone_result;
-    if(phone.length == 0)
-    {
-        document.getElementById('phone_error').innerHTML="Please enter valid phone number";
-        document.getElementById('phone_error').style.visibility='visible';
-        document.getElementById("phone").focus();
+    let phoneReg = new RegExp(/^\+375(25|29|33|44)\d{7}$/g);
+    let phoneReg1 = new RegExp(/^\8017(2|3)\d{6}$/g);
+
+    if ((elPhone.value.length === 0) || (phoneReg.test(elPhone.value) !== true && phoneReg1.test(elPhone.value) !== true)) {
+        RaizeError(window.event.target.name, 1);
     }
-    else
-    {
-        phone_result = phone_reg.test(phone_str);
-        if(phone_result != true)
-        {
-            phone_result = phone_reg1.test(phone_str);
-            if(phone_result != true)
-            {
-                document.getElementById('phone_error').innerHTML="Please enter valid phone number";
-                document.getElementById('phone_error').style.visibility='visible';
-                document.getElementById("phone").focus();
-            } 
-        }
+    else {
+            RaizeError(window.event.target.name, 0);
     }
 }
-function postData()
-{
-    if((document.getElementById('name').value.length > 0) && (document.getElementById('email').value.length > 0) && (document.getElementById('phone').value.length > 0))
-    {
-        var xhr = new XMLHttpRequest();
-        var email = document.getElementById("email").value;
-        var name = document.getElementById("name").value;
-        var phone = document.getElementById("phone").value;
+
+function RaizeError(element, on) {
+    let elementName = element + "_error";
+    let errorMessage;
+    if (on >= 1) {
+        if (element === "name") {
+            errorMessage = "Please enter valid name (length > 0 and contain only symbols";
+        }
+        else {
+            errorMessage = "Please enter valid " + element;
+        }
+        document.getElementById(elementName).innerHTML = errorMessage;
+        document.getElementById(elementName).style.visibility = 'visible';
+        document.getElementById(element).focus();
+    }
+    else {
+            document.getElementById(elementName).style.visibility = 'hidden';
+            document.getElementById(elementName).innerHTML = null;
+    }
+}
+
+function postData() {
+    if ((elName.value.length > 0) && (elEmail.value.length > 0) && (elPhone.value.length > 0)) {
+        let xhr = new XMLHttpRequest();
+        let postDataSt = 'name=' + encodeURIComponent(elName.value) + '&email=' + encodeURIComponent(elEmail.value) + '&phone=' + encodeURIComponent(elPhone.value);
         
-        var postData = 'name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email) + '&phone=' + encodeURIComponent(phone);
-        console.log("PostData: "+postData);
+        console.log("PostData: " + postDataSt);
         xhr.open('POST', '/items');
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.send(postData);
-        xhr.onreadystatechange = function()
-        {
-            if(xhr.readyState != 4) return;
-            if(xhr.readyState == 4 && xhr.status == 200)
-            {
+        xhr.send(postDataSt);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4) {
+            	return;
+            }
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 clearForms();
                 getData();
             }
-           
-        }
+        };
     }
-    else
-    {
-                alert("All the fields are required");
+    else {
+        alert("All the fields are required");
     }
-        
 }
-function getData()
-{
-    var xhr = new XMLHttpRequest();
+
+function getData() {
+    let xhr = new XMLHttpRequest();
+	
     xhr.open('GET', '/items', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function()
-    {
-        if(xhr.readyState==4 && xhr.status==200)
-        {
-            createList(xhr.responseText);    
+    xhr.onreadystatechange = function()	{
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            createList(xhr.responseText);
         }
-    }
+    };
     xhr.send(null);
-
 }
-function createList(data)
-{
-    document.getElementById("table_div").innerHTML = null;
-    var data_array = JSON.parse(data);
-    if(data_array.length >= 1)
-    {
-        var table = document.createElement("table");
+
+function createList(data) {
+    let data_array = JSON.parse(data);
+    divTable.innerHTML = null;
+	
+    if (data_array.length >= 1) {
+        let table = document.createElement("table");
         table.id = "data_list";
         table.setAttribute('class', 'list');
         var head_tr = document.createElement("tr");
@@ -158,95 +138,89 @@ function createList(data)
         head_tr.appendChild(document.createElement("th")).innerText = null;
         head_tr.setAttribute('class', 'border-bottom');
         table.appendChild(head_tr);
-        document.getElementById("table_div").appendChild(table);
-        for(var i = 0; i < data_array.length; i++)
-        {
-            table.appendChild(document.createElement("tr")).id = "tr"+i;
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).innerText = i+1;
-            document.getElementById("tr"+i).childNodes[0].setAttribute('class', 'bold');
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).innerText = data_array[i].name;
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).innerText = data_array[i].email;
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).innerText = data_array[i].phone;
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).id = "td"+i;
-            var rec_id = data_array[i].id;
-            var link = document.createElement('a');
+        divTable.appendChild(table);
+       
+        for (var i = 0; i < data_array.length; i++) {
+            table.appendChild(document.createElement("tr")).id = "tr" + i;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = i + 1;
+            document.getElementById("tr" + i).childNodes[0].setAttribute('class', 'bold');
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = data_array[i].name;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = data_array[i].email;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = data_array[i].phone;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).id = "td" + i;
+            
+            let rec_id = data_array[i].id;
+            let link = document.createElement('a');
             link.setAttribute('href', '#');
             link.setAttribute('id', rec_id);
             link.appendChild(document.createTextNode("Remove"));
-            document.getElementById("td"+i).appendChild(link);
+            document.getElementById("td" + i).appendChild(link);
         }
-    document.getElementById('data_list').addEventListener('click', getTarget);
-    if(window.innerWidth < 768)
-    {
-        document.getElementById('data_list').style.width="100%";
-    }
-    document.getElementById("table_div").style.visibility='visible';
+        document.getElementById('data_list').addEventListener('click', getTarget);
+        if (window.innerWidth < 768) {
+            document.getElementById('data_list').style.width = "100%";
+        }
+        divTable.style.visibility = 'visible';
     }
 }
-function clearForms()
-{
-    document.getElementById("email").value = null;
-    document.getElementById("name").value = null;
-    document.getElementById("phone").value = null;    
+
+function clearForms() {
+    elEmail.value = null;
+    elName.value = null;
+    elPhone.value = null;
 }
-function removeItem(id, target)
-{
-    var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', '/items?id='+id, true);
-    var dataDelete = 'id='+id;
-    xhr.onreadystatechange = function()
-    {
-        if(xhr.readyState==4 && xhr.status==200)
-        {
+
+function removeItem(id, target) {
+    let xhr = new XMLHttpRequest();
+    let dataDelete = 'id=' + id;
+
+    xhr.open('DELETE', '/items?id=' + id, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             removeTableRow(target);
         }
-    }
+    };
     xhr.send();
 }
-function getTarget()
-{
-    if(window.event.target.nodeName == "A")
-    {
-        var target_obj = window.event.target;
+
+function getTarget() {
+    let target_obj = window.event.target;
+
+    if (window.event.target.nodeName === "A") {
         removeItem(target_obj.id, target_obj);
     }
 }
-function removeTableRow(target)
-{
-    var parent_obj = target;
-    var ord_num;
-    var nodata=false;
-    while(parent_obj)
-    {
+
+function removeTableRow(target) {
+    let parent_obj = target;
+    let ord_num;
+    let nodata = false;
+
+	while (parent_obj) {
         parent_obj = parent_obj.parentElement;
-        if(parent_obj.nodeName == "TR")
-        {
+    
+        if (parent_obj.nodeName === "TR") {
             console.log("node: "+parent_obj.childNodes[0].innerHTML);
             document.getElementById('data_list').removeChild(parent_obj);
-            if(document.getElementById('data_list').childNodes.length == 1)
-                {
-                    
-                 document.getElementById('data_list').parentElement.removeChild(document.getElementById('data_list'));
-                 document.getElementById("table_div").style.visibility='hidden';
-                 nodata = true;
-
-
-                }
+        
+            if (document.getElementById('data_list').childNodes.length === 1) {
+                    document.getElementById('data_list').parentElement.removeChild(document.getElementById('data_list'));
+                    divTable.style.visibility='hidden';
+                    nodata = true;
+            }
             break;
         }
     }
-    if(nodata != true)
-    {
-        var tr_count = document.getElementById('data_list').getElementsByTagName("tr").length;
-        console.log("tr_length: "+tr_count);
-        for(var count =0; count < tr_count; count++)
-        {
-            if(count>0)
-            {
+    if (nodata !== true) {
+        let tr_count = document.getElementById('data_list').getElementsByTagName("tr").length;
+        console.log("tr_length: " + tr_count);
+        
+        for (var count =0; count < tr_count; count++) {
+            if (count > 0) {
                 document.getElementById('data_list').childNodes[count].childNodes[0].innerHTML = count;
-                console.log("tr:"+count);
+                console.log("tr:" + count);
                 console.log(document.getElementById('data_list').childNodes[count].childNodes[0].innerHTML);
-            }       
+            }
         }
     }
 }
