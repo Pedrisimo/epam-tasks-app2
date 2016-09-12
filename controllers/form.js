@@ -1,4 +1,5 @@
-var fs = require('fs'),
+/*jshint esversion: 6 */
+let fs = require('fs'),
     config = require('../config');
 
 exports.getAction = function(request, response) {

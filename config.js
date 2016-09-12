@@ -1,13 +1,13 @@
-var projectDir = __dirname,
+let projectDir = __dirname,
     directories = {
         project: projectDir,
         controllers: projectDir + '/controllers',
         templates: projectDir + '/templates',
-        routes: projectDir + '/routes'
-
+        routes: projectDir + '/routes',
+        styles: projectDir + '/templates/css'
     };
 
-var Config = {
+let Config = {
     directories: directories,
 
     routes: directories.routes + '/routes',
@@ -29,9 +29,8 @@ var Config = {
     },
 
     getRoutes: function() {
-        console.log("getRoutes:"+this.route);
+        console.log("getRoutes:" + this.route);
         return require(this.routes);
     }
 };
-
 module.exports = Config;

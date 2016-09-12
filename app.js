@@ -1,9 +1,10 @@
-var http = require('http'),
+let http = require('http'),
     url = require('url'),
     router = require('./router');
 
-http.createServer(function(request, response) {
-    var postData = '', pathname;
+http.createServer(function (request, response) {
+    let postData = '',
+        pathname;
 
     request.setEncoding('utf8');
     pathname = url.parse(request.url).pathname.trim().toLowerCase();
@@ -13,13 +14,10 @@ http.createServer(function(request, response) {
     }
 
     console.log('Requested: ' + pathname);
-
-    request.addListener('data', function(chunk) {
+    request.addListener('data', function (chunk) {
         postData += chunk;
     });
-
-    request.addListener('end', function() {
+    request.addListener('end', function () {
         router.match(request, response, pathname, postData);
     });
-
 }).listen(8888);

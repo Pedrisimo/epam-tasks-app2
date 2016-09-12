@@ -1,17 +1,17 @@
 input.form {
-    width: 480px;
+    width: 90%;
     padding: 10px 10px;
     margin: 5px 0;
     border: 1px solid #ccc;
 }
 
 button {
-    
-    width: 100px;
+
+    width: 120px;
     background-color: #4da5ff;
     color: white;
     padding: 15px 20px;
-    margin: 10px 30px;
+    margin: 10px 20px;
     border: none;
     border-radius: 2px;
     cursor: pointer;
@@ -29,7 +29,7 @@ label
     font-size: 14px;
     color: #404040;
 
-  
+
 }
 
 
@@ -67,7 +67,7 @@ div.text {
 }
 table {
     border-collapse: collapse;
-    width: 800px;
+    width: 70%;
     margin:auto;
     font-family: Verdana;
     font-size: 14px;

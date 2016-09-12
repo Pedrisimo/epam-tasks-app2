@@ -1,252 +1,219 @@
-    if(window.innerWidth < 768)
-    {
-        document.getElementById('form').style.width="100%";
-        document.getElementById('table_div').style.width="100%";
-        document.getElementById('name').style.width="100%";
-        document.getElementById('phone').style.width="100%";
-        document.getElementById('email').style.width="100%";
-    }
+/*jshint esversion: 6 */
 
+let elEmail = document.getElementById("email");
+let elName = document.getElementById("name");
+let elPhone = document.getElementById("phone");
+let btPost = document.getElementById('post');
+let btGet = document.getElementById('get');
+let btClear = document.getElementById('clear');
+let divTable = document.getElementById('table_div');
+let fForm = document.getElementById('form');
 
-  //adding button-event listiners
-    document.getElementById('name').addEventListener('blur', checkName);
-    document.getElementById('phone').addEventListener('blur', checkPhone);
-    document.getElementById('email').addEventListener('blur', checkEmail);
-    document.getElementById('post').addEventListener('click', postData);
-    document.getElementById('get').addEventListener('click', getData);
-    document.getElementById('clear').addEventListener('click', clearForms);
+SetListeners();
 
+//adding button-event listiners
+function SetListeners() {
+    "use strict";
+    elName.addEventListener('blur', checkName);
+    elPhone.addEventListener('blur', checkPhone);
+    elEmail.addEventListener('blur', checkEmail);
+    btPost.addEventListener('click', postData);
+    btGet.addEventListener('click', getData);
+    btClear.addEventListener('click', clearForms);
+}
 
+function checkName() {
+    "use strict";
+        let nameReg = new RegExp(/\d/g);
     
-function checkName()
-{
-    var name_str = document.getElementById("name").value;
-    var name_reg = /^\d$/ig;
-    document.getElementById('name_error').style.visibility='hidden';
-    document.getElementById('name_error').innerHTML=null;
-    if(name_str.length == 0)
-    {
-        document.getElementById('name_error').innerHTML="Please enter valid name (length >0 and contain only symbols";
-        document.getElementById('name_error').style.visibility='visible';
-        document.getElementById("name").focus();
+    if ((elName.value.length === 0) || (elName.value.match(nameReg) !== null)) {
+        showMessage(window.event.target.name, 1);
     }
-    else
-    {
-        name_str = name_str.match(name_reg);
-        if(name_str != null)
-        {
-            document.getElementById('name_error').innerHTML="Please enter valid name (length >0 and contain only symbols";
-            document.getElementById('name_error').style.visibility='visible';
-            document.getElementById("name").focus(); 
-        }
-
-    }
-}
-function checkEmail()
-{
-    var email_str = document.getElementById("email").value;
-    var email_reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
-    document.getElementById('email_error').style.visibility='hidden';
-    document.getElementById('email_error').innerHTML=null;
-    if(email_str.length == 0)
-    {
-        document.getElementById('email_error').innerHTML="Please enter valid email";
-        document.getElementById('email_error').style.visibility='visible';
-        document.getElementById("email").focus();
-    }
-    else
-    {
-        email_str = email_reg.test(email_str);
-        if(email_str != true)
-        {
-            document.getElementById('email_error').innerHTML="Please enter valid email";
-            document.getElementById('email_error').style.visibility='visible';
-            document.getElementById("email").focus(); 
-        }
+    else {
+        showMessage(window.event.target.name, 0);
     }
 }
 
-function checkPhone()
-{
-    var phone_str = document.getElementById("phone").value;
-    var phone_reg = /^\+375(25|29|33|44)\d{7}$/g;
-    var phone_reg1 = /^\8017(2|3)\d{6}$/g;
-    document.getElementById('phone_error').style.visibility='hidden';
-    document.getElementById('phone_error').innerHTML=null;
-    var phone_result;
-    if(phone.length == 0)
-    {
-        document.getElementById('phone_error').innerHTML="Please enter valid phone number";
-        document.getElementById('phone_error').style.visibility='visible';
-        document.getElementById("phone").focus();
+function checkEmail() {
+    "use strict";
+    let emailReg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/);
+    if ((elEmail.value.length === 0) || emailReg.test(elEmail.value) !== true) {
+            showMessage(window.event.target.name, 1);
     }
-    else
-    {
-        phone_result = phone_reg.test(phone_str);
-        if(phone_result != true)
-        {
-            phone_result = phone_reg1.test(phone_str);
-            if(phone_result != true)
-            {
-                document.getElementById('phone_error').innerHTML="Please enter valid phone number";
-                document.getElementById('phone_error').style.visibility='visible';
-                document.getElementById("phone").focus();
-            } 
-        }
+    else {
+            showMessage(window.event.target.name, 0);
     }
 }
-function postData()
-{
-    if((document.getElementById('name').value.length > 0) && (document.getElementById('email').value.length > 0) && (document.getElementById('phone').value.length > 0))
-    {
-        var xhr = new XMLHttpRequest();
-        var email = document.getElementById("email").value;
-        var name = document.getElementById("name").value;
-        var phone = document.getElementById("phone").value;
+
+function checkPhone() {
+    "use strict";
+    let phoneReg = new RegExp(/^\+375(25|29|33|44)\d{7}$/g);
+    let phoneReg1 = new RegExp(/^\8017(2|3)\d{6}$/g);
+
+    if ((elPhone.value.length === 0) || (phoneReg.test(elPhone.value) !== true && phoneReg1.test(elPhone.value) !== true)) {
+        showMessage(window.event.target.name, 1);
+    }
+    else {
+            showMessage(window.event.target.name, 0);
+    }
+}
+
+function showMessage(element, on) {
+    "use strict";
+    let elementName = element + "_error";
+    let errorMessage;
+    if (on >= 1) {
+        if (element === "name") {
+            errorMessage = "Please enter valid name (length > 0 and contain only symbols";
+        }
+        else {
+            errorMessage = "Please enter valid " + element;
+        }
+        document.getElementById(elementName).innerHTML = errorMessage;
+        document.getElementById(elementName).style.visibility = 'visible';
+        document.getElementById(element).focus();
+    }
+    else {
+            document.getElementById(elementName).style.visibility = 'hidden';
+            document.getElementById(elementName).innerHTML = null;
+            return true;
+    }
+}
+
+function postData() {
+    "use strict";
+    if ((elName.value.length > 0) && (elEmail.value.length > 0) && (elPhone.value.length > 0)) {
+        let xhr = new XMLHttpRequest();
+        let postDataSt = 'name=' + encodeURIComponent(elName.value) + '&email=' + encodeURIComponent(elEmail.value) + '&phone=' + encodeURIComponent(elPhone.value);
         
-        var postData = 'name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email) + '&phone=' + encodeURIComponent(phone);
-        console.log("PostData: "+postData);
         xhr.open('POST', '/items');
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.send(postData);
-        xhr.onreadystatechange = function()
-        {
-            if(xhr.readyState != 4) return;
-            if(xhr.readyState == 4 && xhr.status == 200)
-            {
+        xhr.send(postDataSt);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== 4) {
+            	return;
+            }
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 clearForms();
                 getData();
             }
-           
-        }
+        };
     }
-    else
-    {
-                alert("All the fields are required");
+    else {
+        alert("All the fields are required");
     }
-        
 }
-function getData()
-{
-    var xhr = new XMLHttpRequest();
+
+function getData() {
+    "use strict";
+    let xhr = new XMLHttpRequest();
+	
     xhr.open('GET', '/items', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function()
-    {
-        if(xhr.readyState==4 && xhr.status==200)
-        {
-            createList(xhr.responseText);    
+    xhr.onreadystatechange = function()	{
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            createList(xhr.responseText);
         }
-    }
+    };
     xhr.send(null);
-
 }
-function createList(data)
-{
-    document.getElementById("table_div").innerHTML = null;
-    var data_array = JSON.parse(data);
-    if(data_array.length >= 1)
-    {
-        var table = document.createElement("table");
+
+function createList(data) {
+    "use strict";
+    let dataArray = JSON.parse(data);
+    divTable.innerHTML = null;
+	
+    if (dataArray.length >= 1) {
+        let table = document.createElement("table");
         table.id = "data_list";
         table.setAttribute('class', 'list');
-        var head_tr = document.createElement("tr");
-        head_tr.appendChild(document.createElement("th")).innerText = "#";
-        head_tr.appendChild(document.createElement("th")).innerText = "Name";
-        head_tr.appendChild(document.createElement("th")).innerText = "Email";
-        head_tr.appendChild(document.createElement("th")).innerText = "Phone";
-        head_tr.appendChild(document.createElement("th")).innerText = null;
-        head_tr.setAttribute('class', 'border-bottom');
-        table.appendChild(head_tr);
-        document.getElementById("table_div").appendChild(table);
-        for(var i = 0; i < data_array.length; i++)
-        {
-            table.appendChild(document.createElement("tr")).id = "tr"+i;
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).innerText = i+1;
-            document.getElementById("tr"+i).childNodes[0].setAttribute('class', 'bold');
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).innerText = data_array[i].name;
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).innerText = data_array[i].email;
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).innerText = data_array[i].phone;
-            document.getElementById("tr"+i).appendChild(document.createElement("td")).id = "td"+i;
-            var rec_id = data_array[i].id;
-            var link = document.createElement('a');
-            link.setAttribute('href', '#');
-            link.setAttribute('id', rec_id);
-            link.appendChild(document.createTextNode("Remove"));
-            document.getElementById("td"+i).appendChild(link);
+        let headTr = document.createElement("tr");
+        headTr.appendChild(document.createElement("th")).innerText = "#";
+        headTr.appendChild(document.createElement("th")).innerText = "Name";
+        headTr.appendChild(document.createElement("th")).innerText = "Email";
+        headTr.appendChild(document.createElement("th")).innerText = "Phone";
+        headTr.appendChild(document.createElement("th")).innerText = null;
+        headTr.setAttribute('class', 'border-bottom');
+        table.appendChild(headTr);
+        divTable.appendChild(table);
+       
+        for (let i = 0; i < dataArray.length; i++) {
+            table.appendChild(document.createElement("tr")).id = "tr" + i;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = i + 1;
+            document.getElementById("tr" + i).childNodes[0].setAttribute('class', 'bold');
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = dataArray[i].name;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = dataArray[i].email;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = dataArray[i].phone;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).id = "td" + i;
+            
+            let recordID = dataArray[i].id;
+            let linkURL = document.createElement('a');
+            linkURL.setAttribute('href', '#');
+            linkURL.setAttribute('id', recordID);
+            linkURL.appendChild(document.createTextNode("Remove"));
+            document.getElementById("td" + i).appendChild(linkURL);
         }
-    document.getElementById('data_list').addEventListener('click', getTarget);
-    if(window.innerWidth < 768)
-    {
-        document.getElementById('data_list').style.width="100%";
-    }
-    document.getElementById("table_div").style.visibility='visible';
+        document.getElementById('data_list').addEventListener('click', getTarget);
+        divTable.style.visibility = 'visible';
     }
 }
-function clearForms()
-{
-    document.getElementById("email").value = null;
-    document.getElementById("name").value = null;
-    document.getElementById("phone").value = null;    
+
+function clearForms() {
+    "use strict";
+    elEmail.value = null;
+    elName.value = null;
+    elPhone.value = null;
 }
-function removeItem(id, target)
-{
-    var xhr = new XMLHttpRequest();
-    xhr.open('DELETE', '/items?id='+id, true);
-    var dataDelete = 'id='+id;
-    xhr.onreadystatechange = function()
-    {
-        if(xhr.readyState==4 && xhr.status==200)
-        {
+
+function removeItem(id, target) {
+    "use strict";
+    let xhr = new XMLHttpRequest();
+    let dataDelete = 'id=' + id;
+
+    xhr.open('DELETE', '/items?id=' + id, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
             removeTableRow(target);
         }
-    }
+    };
     xhr.send();
 }
-function getTarget()
-{
-    if(window.event.target.nodeName == "A")
-    {
-        var target_obj = window.event.target;
-        removeItem(target_obj.id, target_obj);
+
+function getTarget() {
+    "use strict";
+    let targetObj = window.event.target;
+
+    if (window.event.target.nodeName === "A") {
+        removeItem(targetObj.id, targetObj);
     }
 }
-function removeTableRow(target)
-{
-    var parent_obj = target;
-    var ord_num;
-    var nodata=false;
-    while(parent_obj)
-    {
-        parent_obj = parent_obj.parentElement;
-        if(parent_obj.nodeName == "TR")
-        {
-            console.log("node: "+parent_obj.childNodes[0].innerHTML);
-            document.getElementById('data_list').removeChild(parent_obj);
-            if(document.getElementById('data_list').childNodes.length == 1)
-                {
-                    
-                 document.getElementById('data_list').parentElement.removeChild(document.getElementById('data_list'));
-                 document.getElementById("table_div").style.visibility='hidden';
-                 nodata = true;
 
+function removeTableRow(target) {
+    "use strict";
+    let parentObj = target;
+    let noData = false;
 
-                }
+	while (parentObj) {
+        parentObj = parentObj.parentElement;
+    
+        if (parentObj.nodeName === "TR") {
+            document.getElementById('data_list').removeChild(parentObj);
+        
+            if (document.getElementById('data_list').childNodes.length === 1) {
+                    document.getElementById('data_list').parentElement.removeChild(document.getElementById('data_list'));
+                    divTable.style.visibility='hidden';
+                    noData = true;
+            }
             break;
         }
     }
-    if(nodata != true)
-    {
-        var tr_count = document.getElementById('data_list').getElementsByTagName("tr").length;
-        console.log("tr_length: "+tr_count);
-        for(var count =0; count < tr_count; count++)
-        {
-            if(count>0)
-            {
+    if (!noData) {
+        let trCount = document.getElementById('data_list').getElementsByTagName("tr").length;
+        
+        for (let count = 0; count < trCount; count++) {
+            if (count > 0) {
                 document.getElementById('data_list').childNodes[count].childNodes[0].innerHTML = count;
-                console.log("tr:"+count);
-                console.log(document.getElementById('data_list').childNodes[count].childNodes[0].innerHTML);
-            }       
+            }
         }
     }
 }

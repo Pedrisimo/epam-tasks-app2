@@ -1,7 +1,7 @@
-var fs = require('fs'),
+let fs = require('fs'),
     config = require('../config');
 
-exports.getAction = function(request, response) {
+exports.getStyles = function(request, response) {
     response.writeHead(200, {"Content-Type": 'text/css'});
-    fs.createReadStream(config.directories.templates + '/css/styles.css').pipe(response);
+    fs.createReadStream(config.directories.project + request.url).pipe(response);
 };

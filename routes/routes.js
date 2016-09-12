@@ -20,13 +20,13 @@ module.exports = [
         action: 'items::getAction'
     },
     {
-      pattern: '/script',
+      pattern: '/templates/script/.*',
       methods: ['GET'],
-      action: 'script::getAction'
+      action: 'script::getScript'
     },
     {
-      pattern: '/styles',
+      pattern: '/templates/css/.*',
       methods: ['GET'],
-      action: 'styles::getAction'
+      action: 'styles::getStyles'
     }
 ];
