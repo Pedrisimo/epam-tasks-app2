@@ -1,27 +1,19 @@
-var elEmail = document.getElementById("email");
-var elName = document.getElementById("name");
-var elPhone = document.getElementById("phone");
-var btPost = document.getElementById('post');
-var btGet = document.getElementById('get');
-var btClear = document.getElementById('clear');
-var divTable = document.getElementById('table_div');
-var fForm = document.getElementById('form');
+/*jshint esversion: 6 */
 
-ResizeElements();
+let elEmail = document.getElementById("email");
+let elName = document.getElementById("name");
+let elPhone = document.getElementById("phone");
+let btPost = document.getElementById('post');
+let btGet = document.getElementById('get');
+let btClear = document.getElementById('clear');
+let divTable = document.getElementById('table_div');
+let fForm = document.getElementById('form');
+
 SetListeners();
 
-function ResizeElements() {
-    if (window.innerWidth < 768) {
-        fForm.style.width = "100%";
-        divTable.style.width = "100%";
-        elName.style.width = "100%";
-        elPhone.style.width = "100%";
-        elEmail.style.width = "100%";
-    }
-
-}
 //adding button-event listiners
 function SetListeners() {
+    "use strict";
     elName.addEventListener('blur', checkName);
     elPhone.addEventListener('blur', checkPhone);
     elEmail.addEventListener('blur', checkEmail);
@@ -31,41 +23,43 @@ function SetListeners() {
 }
 
 function checkName() {
+    "use strict";
         let nameReg = new RegExp(/\d/g);
     
     if ((elName.value.length === 0) || (elName.value.match(nameReg) !== null)) {
-        RaizeError(window.event.target.name, 1);
+        showMessage(window.event.target.name, 1);
     }
     else {
-            RaizeError(window.event.target.name, 0);
+        showMessage(window.event.target.name, 0);
     }
 }
 
 function checkEmail() {
+    "use strict";
     let emailReg = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/);
-
     if ((elEmail.value.length === 0) || emailReg.test(elEmail.value) !== true) {
-        RaizeError(window.event.target.name, 1);
+            showMessage(window.event.target.name, 1);
     }
     else {
-            RaizeError(window.event.target.name, 0);
+            showMessage(window.event.target.name, 0);
     }
 }
 
-function checkPhone()
-{
+function checkPhone() {
+    "use strict";
     let phoneReg = new RegExp(/^\+375(25|29|33|44)\d{7}$/g);
     let phoneReg1 = new RegExp(/^\8017(2|3)\d{6}$/g);
 
     if ((elPhone.value.length === 0) || (phoneReg.test(elPhone.value) !== true && phoneReg1.test(elPhone.value) !== true)) {
-        RaizeError(window.event.target.name, 1);
+        showMessage(window.event.target.name, 1);
     }
     else {
-            RaizeError(window.event.target.name, 0);
+            showMessage(window.event.target.name, 0);
     }
 }
 
-function RaizeError(element, on) {
+function showMessage(element, on) {
+    "use strict";
     let elementName = element + "_error";
     let errorMessage;
     if (on >= 1) {
@@ -82,15 +76,16 @@ function RaizeError(element, on) {
     else {
             document.getElementById(elementName).style.visibility = 'hidden';
             document.getElementById(elementName).innerHTML = null;
+            return true;
     }
 }
 
 function postData() {
+    "use strict";
     if ((elName.value.length > 0) && (elEmail.value.length > 0) && (elPhone.value.length > 0)) {
         let xhr = new XMLHttpRequest();
         let postDataSt = 'name=' + encodeURIComponent(elName.value) + '&email=' + encodeURIComponent(elEmail.value) + '&phone=' + encodeURIComponent(elPhone.value);
         
-        console.log("PostData: " + postDataSt);
         xhr.open('POST', '/items');
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.send(postDataSt);
@@ -110,6 +105,7 @@ function postData() {
 }
 
 function getData() {
+    "use strict";
     let xhr = new XMLHttpRequest();
 	
     xhr.open('GET', '/items', true);
@@ -123,54 +119,54 @@ function getData() {
 }
 
 function createList(data) {
-    let data_array = JSON.parse(data);
+    "use strict";
+    let dataArray = JSON.parse(data);
     divTable.innerHTML = null;
 	
-    if (data_array.length >= 1) {
+    if (dataArray.length >= 1) {
         let table = document.createElement("table");
         table.id = "data_list";
         table.setAttribute('class', 'list');
-        var head_tr = document.createElement("tr");
-        head_tr.appendChild(document.createElement("th")).innerText = "#";
-        head_tr.appendChild(document.createElement("th")).innerText = "Name";
-        head_tr.appendChild(document.createElement("th")).innerText = "Email";
-        head_tr.appendChild(document.createElement("th")).innerText = "Phone";
-        head_tr.appendChild(document.createElement("th")).innerText = null;
-        head_tr.setAttribute('class', 'border-bottom');
-        table.appendChild(head_tr);
+        let headTr = document.createElement("tr");
+        headTr.appendChild(document.createElement("th")).innerText = "#";
+        headTr.appendChild(document.createElement("th")).innerText = "Name";
+        headTr.appendChild(document.createElement("th")).innerText = "Email";
+        headTr.appendChild(document.createElement("th")).innerText = "Phone";
+        headTr.appendChild(document.createElement("th")).innerText = null;
+        headTr.setAttribute('class', 'border-bottom');
+        table.appendChild(headTr);
         divTable.appendChild(table);
        
-        for (var i = 0; i < data_array.length; i++) {
+        for (let i = 0; i < dataArray.length; i++) {
             table.appendChild(document.createElement("tr")).id = "tr" + i;
             document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = i + 1;
             document.getElementById("tr" + i).childNodes[0].setAttribute('class', 'bold');
-            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = data_array[i].name;
-            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = data_array[i].email;
-            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = data_array[i].phone;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = dataArray[i].name;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = dataArray[i].email;
+            document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = dataArray[i].phone;
             document.getElementById("tr" + i).appendChild(document.createElement("td")).id = "td" + i;
             
-            let rec_id = data_array[i].id;
-            let link = document.createElement('a');
-            link.setAttribute('href', '#');
-            link.setAttribute('id', rec_id);
-            link.appendChild(document.createTextNode("Remove"));
-            document.getElementById("td" + i).appendChild(link);
+            let recordID = dataArray[i].id;
+            let linkURL = document.createElement('a');
+            linkURL.setAttribute('href', '#');
+            linkURL.setAttribute('id', recordID);
+            linkURL.appendChild(document.createTextNode("Remove"));
+            document.getElementById("td" + i).appendChild(linkURL);
         }
         document.getElementById('data_list').addEventListener('click', getTarget);
-        if (window.innerWidth < 768) {
-            document.getElementById('data_list').style.width = "100%";
-        }
         divTable.style.visibility = 'visible';
     }
 }
 
 function clearForms() {
+    "use strict";
     elEmail.value = null;
     elName.value = null;
     elPhone.value = null;
 }
 
 function removeItem(id, target) {
+    "use strict";
     let xhr = new XMLHttpRequest();
     let dataDelete = 'id=' + id;
 
@@ -184,42 +180,39 @@ function removeItem(id, target) {
 }
 
 function getTarget() {
-    let target_obj = window.event.target;
+    "use strict";
+    let targetObj = window.event.target;
 
     if (window.event.target.nodeName === "A") {
-        removeItem(target_obj.id, target_obj);
+        removeItem(targetObj.id, targetObj);
     }
 }
 
 function removeTableRow(target) {
-    let parent_obj = target;
-    let ord_num;
-    let nodata = false;
+    "use strict";
+    let parentObj = target;
+    let noData = false;
 
-	while (parent_obj) {
-        parent_obj = parent_obj.parentElement;
+	while (parentObj) {
+        parentObj = parentObj.parentElement;
     
-        if (parent_obj.nodeName === "TR") {
-            console.log("node: "+parent_obj.childNodes[0].innerHTML);
-            document.getElementById('data_list').removeChild(parent_obj);
+        if (parentObj.nodeName === "TR") {
+            document.getElementById('data_list').removeChild(parentObj);
         
             if (document.getElementById('data_list').childNodes.length === 1) {
                     document.getElementById('data_list').parentElement.removeChild(document.getElementById('data_list'));
                     divTable.style.visibility='hidden';
-                    nodata = true;
+                    noData = true;
             }
             break;
         }
     }
-    if (nodata !== true) {
-        let tr_count = document.getElementById('data_list').getElementsByTagName("tr").length;
-        console.log("tr_length: " + tr_count);
+    if (!noData) {
+        let trCount = document.getElementById('data_list').getElementsByTagName("tr").length;
         
-        for (var count =0; count < tr_count; count++) {
+        for (let count = 0; count < trCount; count++) {
             if (count > 0) {
                 document.getElementById('data_list').childNodes[count].childNodes[0].innerHTML = count;
-                console.log("tr:" + count);
-                console.log(document.getElementById('data_list').childNodes[count].childNodes[0].innerHTML);
             }
         }
     }

@@ -1,9 +1,9 @@
-var http = require('http'),
+let http = require('http'),
     url = require('url'),
     router = require('./router');
 
 http.createServer(function (request, response) {
-    var postData = '',
+    let postData = '',
         pathname;
 
     request.setEncoding('utf8');
