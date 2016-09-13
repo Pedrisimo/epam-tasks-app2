@@ -11,7 +11,7 @@ function getDBRecs(callback) {
         else {
             let collection = db.collection("persons");
             collection.find().toArray(callback);
-            console.log("DB Success");
+            console.log("DB Get Success");
             db.close();
         }
     });
@@ -26,7 +26,7 @@ function setDBRecs(insertDoc, callback) {
         else {
             let collection = db.collection("persons");
             collection.insertOne(insertDoc, callback);
-            console.log("DB Success");
+            console.log("DB Add Success");
             db.close();
         }
     });
@@ -41,7 +41,7 @@ function rmDBRecs(rmDoc, callback) {
         else {
             let collection = db.collection("persons");
             collection.deleteOne(delRec, callback);
-            console.log("DB Success");
+            console.log("DB Delete Success");
             db.close();
         }
     });

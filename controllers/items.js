@@ -17,11 +17,11 @@ exports.getAction = function (request, response) {
         }
         else {
             responseData = JSON.stringify(data);
+            response.writeHead(200, {'Content-Type': 'application/json'});
+            response.write(responseData);
+            response.end();
         }
-        console.log("DB Response: " + responseData);
-        response.writeHead(200, {'Content-Type': 'application/json'});
-        response.write(responseData);
-        response.end();
+
     });
 };
 
