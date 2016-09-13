@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+"use strict";
 let config = require('./config');
 
 exports.match = function(request, response, pathname, postData) {

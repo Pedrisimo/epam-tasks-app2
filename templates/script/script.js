@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-
+(function() {
 let elEmail = document.getElementById("email");
 let elName = document.getElementById("name");
 let elPhone = document.getElementById("phone");
@@ -146,7 +146,7 @@ function createList(data) {
             document.getElementById("tr" + i).appendChild(document.createElement("td")).innerText = dataArray[i].phone;
             document.getElementById("tr" + i).appendChild(document.createElement("td")).id = "td" + i;
             
-            let recordID = dataArray[i].id;
+            let recordID = dataArray[i]._id;
             let linkURL = document.createElement('a');
             linkURL.setAttribute('href', '#');
             linkURL.setAttribute('id', recordID);
@@ -217,3 +217,4 @@ function removeTableRow(target) {
         }
     }
 }
+})();
