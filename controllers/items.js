@@ -8,32 +8,34 @@ let fs = require('fs'),
     rmDBRecs = db.rmDBRecs;
 
 exports.getAction = function (request, response) {
-    let docs;
     getDBRecs((error, data) => {
+        let responseData;
         if (error) {
-            docs = JSON.stringify(error.name + " : " + error.message);
+            responseData = error.name + " : " + error.message;
+            response.writeHead(503, {'Content-Type': 'application/json'});
+            response.end(JSON.stringify({responseData: 'Can\'t get data. Please see server\'s console output for details.'}));
         }
         else {
-            docs = JSON.stringify(data);
+            responseData = JSON.stringify(data);
         }
-        console.log("DB Response: " + docs);
+        console.log("DB Response: " + responseData);
         response.writeHead(200, {'Content-Type': 'application/json'});
-        response.write(docs);
+        response.write(responseData);
         response.end();
     });
 };
 
 exports.postAction = function (request, response, pathname, postData) {
-    let docs;
     postData = qs.parse(postData);
     setDBRecs(postData, function(error, data) {
+        let responseData;
         if (error) {
-            docs = JSON.stringify(error.name + " : " + error.message);
+            responseData = error.name + " : " + error.message;
             response.writeHead(503, {'Content-Type': 'application/json'});
-            response.end(JSON.stringify({docs: 'Can\'t save data. Please see server\'s console output for details.'}));
+            response.end(JSON.stringify({responseData: 'Can\'t save data. Please see server\'s console output for details.'}));
         }
         else {
-            docs = JSON.stringify(data);
+            responseData = JSON.stringify(data);
             response.writeHead(200, {'Content-Type': 'application/json'});
             response.end(JSON.stringify(postData));
         }
@@ -41,16 +43,16 @@ exports.postAction = function (request, response, pathname, postData) {
 };
 
 exports.deleteAllAction = function (request, response, pathname) {
-    let docs;
     let deleteData = qs.parse(request.url.trim().replace(/.*\?/, ''));
     rmDBRecs(deleteData, function(error, data) {
+            let responseData;
         if (error) {
-            docs = JSON.stringify(error.name + " : " + error.message);
+            responseData = error.name + " : " + error.message;
             response.writeHead(503, {'Content-Type': 'application/json'});
-            response.end(JSON.stringify({docs: 'Can\'t save data. Please see server\'s console output for details.'}));
+            response.end(JSON.stringify({responseData: 'Can\'t delete record. Please see server\'s console output for details.'}));
         }
         else {
-            docs = JSON.stringify(data);
+            responseData = JSON.stringify(data);
             response.writeHead(200, {'Content-Type': 'application/json'});
             response.end(JSON.stringify(deleteData));
         }
