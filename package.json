@@ -1,7 +1,9 @@
 {
   "name": "epam-node-app2",
   "version": "0.0.1",
-  "devDependencies": {},
+  "devDependencies": {
+    "mongodb": "~2.2.9",
+    },
   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js"
@@ -9,6 +11,6 @@
   "main": "app.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/volegg/epam-tasks-app2.git"
+    "url": "https://github.com/Pedrisimo/epam-tasks-app2.git"
   }
 }

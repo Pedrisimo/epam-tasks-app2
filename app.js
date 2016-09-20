@@ -1,3 +1,4 @@
+"use strict";
 let http = require('http'),
     url = require('url'),
     router = require('./router');
