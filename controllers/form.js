@@ -1,8 +1,8 @@
 "use strict";
 let fs = require('fs'),
-    config = require('../config');
+    config = require('../routesconfig');
 
-exports.getAction = function(request, response) {
-    response.writeHead(200, {"Content-Type": 'text/html'});
-    fs.createReadStream(config.directories.templates + '/form.html').pipe(response);
+exports.getForm = function(req, res) {
+    res.set("Content-Type", 'text/html');
+    fs.createReadStream(config.folders.publicFolder + '/index.html').pipe(res);
 };

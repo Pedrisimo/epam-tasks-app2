@@ -1,33 +1,33 @@
 "use strict";
 module.exports = [
     {
+        pattern: '/',
+        methods: ['GET'],
+        action: 'onform::getForm'
+    },
+        {
         pattern: '/form',
         methods: ['GET'],
-        action: 'form::getAction'
+        action: 'onform::getForm'
     },
     {
         pattern: '/items',
         methods: ['POST'],
-        action: 'items::postAction'
+        action: 'actions::postData'
     },
     {
         pattern: '/items',
         methods: ['DELETE'],
-        action: 'items::deleteAllAction'
+        action: 'actions::rmData'
     },
     {
         pattern: '/items',
         methods: ['GET'],
-        action: 'items::getAction'
+        action: 'actions::getData'
     },
     {
-      pattern: '/templates/script/.*',
+      pattern: '/app/.*',
       methods: ['GET'],
-      action: 'script::getScript'
-    },
-    {
-      pattern: '/templates/css/.*',
-      methods: ['GET'],
-      action: 'styles::getStyles'
+      action: 'public::getPublic'
     }
 ];

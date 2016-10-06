@@ -2,7 +2,7 @@
   "name": "epam-node-app2",
   "version": "0.0.1",
   "devDependencies": {
-    "mongodb": "~2.2.9",
+    "mongodb": "~2.2.9"
     },
   "scripts": {
     "debug": "node debug app.js",

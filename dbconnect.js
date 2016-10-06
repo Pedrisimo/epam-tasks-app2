@@ -1,49 +1,22 @@
 "use strict";
-let mongoDB = require('mongodb');
-let mongoClient = mongoDB.MongoClient;
-let url = 'mongodb://localhost:27017/local';
-
+let db = require('mysql');
+let connection = db.createConnection({
+    port: '3306',
+    host     : 'localhost',
+    user     : 'root',
+    password : '',
+    database : 'local'
+});
 function getDBRecs(callback) {
-     mongoClient.connect(url, function(err, db) {
-        if (err) {
-            callback(err);
-        }
-        else {
-            let collection = db.collection("persons");
-            collection.find().toArray(callback);
-            console.log("DB Get Success");
-            db.close();
-        }
-    });
+    connection.query('SELECT * from persons', callback);
 }
 
-function setDBRecs(insertDoc, callback) {
-     mongoClient.connect(url, function(err, db) {
-        let docStr = insertDoc;
-        if (err) {
-            callback(err);
-        }
-        else {
-            let collection = db.collection("persons");
-            collection.insertOne(insertDoc, callback);
-            console.log("DB Add Success");
-            db.close();
-        }
-    });
+function setDBRecs(data, callback) {
+    console.log(JSON.stringify(data));
+        connection.query('INSERT INTO persons SET ?', data, callback);
 }
 
-function rmDBRecs(rmDoc, callback) {
-    let delRec = { "_id": new mongoDB.ObjectID(rmDoc.id) };
-     mongoClient.connect(url, function(err, db) {
-        if (err) {
-            callback(err);
-        }
-        else {
-            let collection = db.collection("persons");
-            collection.deleteOne(delRec, callback);
-            console.log("DB Delete Success");
-            db.close();
-        }
-    });
+function rmDBRecs(data, callback) {
+    connection.query('DELETE from persons WHERE id = ?', data.id, callback);
 }
-module.exports = { getDBRecs: getDBRecs, setDBRecs: setDBRecs, rmDBRecs: rmDBRecs };
+module.exports = {getDBRecs : getDBRecs, setDBRecs : setDBRecs, rmDBRecs : rmDBRecs};

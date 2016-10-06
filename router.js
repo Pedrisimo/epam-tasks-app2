@@ -1,5 +1,5 @@
 "use strict";
-let config = require('./config');
+let config = require('./routesconfig');
 
 exports.match = function(request, response, pathname, postData) {
     console.log("request:" + request);

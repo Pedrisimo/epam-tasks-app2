@@ -1,24 +1,20 @@
 "use strict";
-let http = require('http'),
-    url = require('url'),
-    router = require('./router');
+let express = require('express'),
+http = require('http'),
+fs = require('fs'),
+bodyParser = require('body-parser'),
+app = express(),
+router = require('./router');
+let postData ='';
+app.set('port', 8888);
 
-http.createServer(function (request, response) {
-    let postData = '',
-        pathname;
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(function(req, res) {
 
-    request.setEncoding('utf8');
-    pathname = url.parse(request.url).pathname.trim().toLowerCase();
-
-    if (pathname.lastIndexOf('/') === pathname.length - 1) {
-        pathname = pathname.substring(0, pathname.length - 1);
-    }
-
-    console.log('Requested: ' + pathname);
-    request.addListener('data', function (chunk) {
-        postData += chunk;
-    });
-    request.addListener('end', function () {
-        router.match(request, response, pathname, postData);
-    });
-}).listen(8888);
+    console.log("Request string: " + req.url);
+    postData = req.body;
+    console.log("incoming data:" + JSON.stringify(req.body));
+    router.match(req, res, req.url, postData);
+});
+app.listen(app.get('port'));
