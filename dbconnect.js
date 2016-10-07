@@ -13,7 +13,12 @@ function getDBRecs(callback) {
 
 function setDBRecs(data, callback) {
     console.log(JSON.stringify(data));
+    if(!data.hasOwnProperty('id')) { 
         connection.query('INSERT INTO persons SET ?', data, callback);
+    }
+    else {
+    	connection.query('UPDATE persons SET name =:name, email =:email, phone =:prone WHERE id =:id?', {data.id}data, callback);
+    }
 }
 
 function rmDBRecs(data, callback) {

@@ -16,6 +16,7 @@ function createList($rootScope, $http, $scope) {
 
     });
    $scope.rmuser = rmUser;
+   $scope.edituser = editUser;
     function rmUser(id) {
         console.log("RM ID:" + id);
         let rmRec = {"id": id};
@@ -32,4 +33,7 @@ function createList($rootScope, $http, $scope) {
                 alert(response.data);
             });
     };
+    function editUser(user) {
+        $rootScope.$broadcast('editUser', user);
+    }
 }

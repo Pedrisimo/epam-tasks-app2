@@ -17,4 +17,7 @@ function addUser($rootScope, $scope, $http) {
             alert(response.data);
     });
     };
+    $scope.$on('editUser', function(event, user) {
+        $scope.user = user;
+    })
 }
