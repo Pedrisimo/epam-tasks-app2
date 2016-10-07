@@ -1,10 +1,7 @@
 {
   "name": "epam-node-app2",
   "version": "0.0.1",
-  "devDependencies": {
-    "mongodb": "~2.2.9"
-    },
-  "scripts": {
+   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js"
   },
@@ -12,5 +9,12 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Pedrisimo/epam-tasks-app2.git"
+  },
+  "dependencies": {
+    "angular-ui-router": "^0.3.1",
+    "body-parser": "^1.15.2",
+    "bootstrap": "^3.3.7",
+    "express": "^4.14.0",
+    "mysql": "^2.11.1"
   }
 }

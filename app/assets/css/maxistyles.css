@@ -33,7 +33,7 @@ label
 }
 
 
-div.form {
+form.form {
     border-radius: 0px;
     border: 1px solid #c2c2a3;
     padding: 30px;
@@ -43,7 +43,7 @@ div.form {
     top: 50px;
 
 }
-div.result {
+table.result {
     border-radius: 0px;
     border: 1px solid #c2c2a3;
     padding: 30px;
@@ -51,8 +51,6 @@ div.result {
     margin: auto;
     position: relative;
     top: 100px;
-    visibility:hidden;
-
 }
 
 div.text {
