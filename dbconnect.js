@@ -17,7 +17,7 @@ function setDBRecs(data, callback) {
         connection.query('INSERT INTO persons SET ?', data, callback);
     }
     else {
-    	connection.query('UPDATE persons SET name =:name, email =:email, phone =:prone WHERE id =:id?', {data.id}data, callback);
+    	connection.query('UPDATE persons SET name =?, email =?, phone =? WHERE id =?', [data.name, data.email, data.phone, data.id], callback);
     }
 }
 

@@ -4,20 +4,21 @@
     <meta charset="UTF8">
     <link rel="shortcut icon" href="data:image/xicon;," type="image/xicon">
     <link rel="stylesheet" href="app/assets/css/maxistyles.css">
+    <!--link rel="stylesheet" href="app/assets/libs/bootstrap.min.css"-->
     <title>Form</title>
 </head>
 <body ng-app="app">
 <form class="form" role="form" ng-controller="addUser">
     <div class="text">Add Item</div>
-    <label for="name">Name:</label>   
-    <input class = "form" ng-model="user.name" placeholder="Input name" id="name" type="text" name="name" />
-    <div class="name_error" id="name_error"></div>
-    <label for="email">Email:</label>   
+    <label for="name">Name:</label>
+    <input class = "form" ng-model="user.name" placeholder="Input name" id="name" type="text" name="name"/>
+    <p ng-show="userNameErr" class="help-block">Field is required! Enter valid name.</p>
+    <label for="email">Email:</label>
     <input class = "form" ng-model="user.email" placeholder="Your email address" id="email" type="text" name="email" />
-    <div class="email_error" id="email_error"></div>
-    <label for="phone">Phone:</label> 
+    <p ng-show="userEmailErr" class="help-block">Field is required! Enter valid email address.</p>
+    <label for="phone">Phone:</label>
     <input class = "form" ng-model="user.phone" placeholder="+375ZZXXXYYYY" id="phone" type="text" name="phone" />
-    <div class="phone_error" id="phone_error"></div>
+    <p ng-show="userPhoneErr" class="help-block">Field is required! Enter valid phone number.</p>
     <button class="btn btn-success" id="post" ng-click="adduser(user)">Add</button>
     <button class="btn btn-primary" id="get" ng-click="getusers()" ng-controller="Users as ctrl">Get Data</button>
 </form>
